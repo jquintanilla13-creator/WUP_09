@@ -120,8 +120,36 @@ After running this code, we were able to get the best two regression models were
 
 ## Roach
 
+```{r}
+Roach <- filter(fish, Species == "Roach")
+Roach <- select(Roach, -Species) 
+```
+
 ### Best Models
 
+```{r}
+Roachmodel1 <- lm(Length1~.,data=Roach)
+summary.lm(Roachmodel1)
+```
+
 ### Best Two regressor model
+
+```{r}
+library(leaps)
+Roachmodelautomate <-
+  regsubsets(Weight~.,
+             data=Roach,
+             nbest=1,       #1 best model for each number of predictors
+             nvmax=NULL,    # NULL for no limit on number of variables
+             force.in=NULL, force.out=NULL,
+             method = "exhaustive")
+             
+summary.roach <- summary(Roachmodelautomate)
+as.data.frame(summary.perch$outmat)
+library(car)
+subsets(Roachmodelautomate,statistic="adjr2",legend="bottomright",main="AdjustedR^2")
+```
+
+After running the code above, we were able to get all five regression models and the best model in general were length 3 and Width. We judged the element regression models based on the Adjusted R square values. 
 
 ## Final Summary Statements
